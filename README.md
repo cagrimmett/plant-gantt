@@ -14,7 +14,7 @@ The goal of this project is to create an interactive planting/harvesting calenda
 
 ### Plans/Subgoals
 
-- Use D3.js for the Gantt-style calendar
+- Use D3.js for the Gantt-style calendar - [Here is a quick and dirty version of what I want](https://observablehq.com/@cagrimmett/plant-gantt)
 - Use/learn Tailwind for quick styling
 - Learn how to set up my own backend for an Ember app
 
