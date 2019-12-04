@@ -3,38 +3,38 @@ import { scaleTime, scaleBand } from "d3-scale";
 import { select } from "d3-selection";
 import { axisBottom } from "d3-axis";
 import { timeFormat } from "d3-time-format";
-import { timeMonth } from "d3-time";
+import { timeWeek, timeDay } from "d3-time";
 
 let data = [
   {
-    start: "February 27, 2020",
-    end: "May 23, 2020",
-    name: "Broccoli",
-    color: "#A6D785"
+    start: "May 10, 2020",
+    daysToMaturity: 29,
+    name: "Radishes",
+    color: "#ea5189"
   },
   {
-    start: "April 2, 2020",
-    end: "June 5, 2020",
-    name: "Apples",
-    color: "red"
+    start: "May 1, 2020",
+    daysToMaturity: 80,
+    name: "Anaheim Peppers",
+    color: "#66e15b"
   },
   {
-    start: "August 30, 2020",
-    end: "November 20, 2020",
-    name: "Kale",
-    color: "#006400"
+    start: "June 15, 2020",
+    daysToMaturity: 60,
+    name: "Lacinato Kale",
+    color: "#036b47"
   },
   {
     start: "May 3, 2020",
-    end: "August 12, 2020",
+    daysToMaturity: 80,
     name: "Eggplant",
     color: "purple"
   },
   {
     start: "May 20, 2020",
-    end: "July 30, 2020",
-    name: "Tomatoes",
-    color: "blue"
+    daysToMaturity: 75,
+    name: "Roma Tomatoes",
+    color: "#ff5050"
   }
 ];
 
@@ -43,6 +43,7 @@ function sortDateAscending(a, b) {
 }
 
 data = data.sort(sortDateAscending);
+let lastItem = data.length - 1;
 
 export default class Calendar extends Component {
   didInsertElement() {
@@ -53,8 +54,11 @@ export default class Calendar extends Component {
 
     let x = scaleTime()
       .domain([
-        new Date("January 1, 2020 00:00:00"),
-        new Date("December 31, 2020 23:59:59")
+        timeDay.offset(new Date(data[0].start), -15),
+        timeDay.offset(
+          new Date(data[lastItem].start),
+          data[lastItem].daysToMaturity + 15
+        )
       ])
       .range([10, width - 10]);
 
@@ -66,8 +70,8 @@ export default class Calendar extends Component {
     svg.append("g").call(
       axisBottom()
         .scale(x)
-        .ticks(timeMonth.every())
-        .tickFormat(timeFormat("%b"))
+        .ticks(timeWeek.every())
+        .tickFormat(timeFormat("%b %d"))
     );
 
     svg
@@ -80,7 +84,12 @@ export default class Calendar extends Component {
       .attr("y", d => y(d.name))
       .style("fill", d => d.color)
       .attr("rx", "5")
-      .attr("width", d => x(new Date(d.end)) - x(new Date(d.start)));
+      .attr(
+        "width",
+        d =>
+          x(timeDay.offset(new Date(d.start), d.daysToMaturity)) -
+          x(new Date(d.start))
+      );
 
     svg
       .append("g")
@@ -90,7 +99,13 @@ export default class Calendar extends Component {
       .selectAll("text")
       .data(data)
       .join("text")
-      .attr("x", d => (x(new Date(d.end)) + x(new Date(d.start))) / 2)
+      .attr(
+        "x",
+        d =>
+          (x(timeDay.offset(new Date(d.start), d.daysToMaturity)) +
+            x(new Date(d.start))) /
+          2
+      )
       .attr("y", d => y(d.name) + y.bandwidth() / 2)
       .attr("dy", "0.35em")
       .text(d => d.name);
