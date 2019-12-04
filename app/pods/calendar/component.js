@@ -3,9 +3,9 @@ import { scaleTime, scaleBand } from "d3-scale";
 import { select } from "d3-selection";
 import { axisBottom } from "d3-axis";
 import { timeFormat } from "d3-time-format";
-import { timeWeek } from "d3-time";
+import { timeMonth } from "d3-time";
 
-const data = [
+let data = [
   {
     start: "February 27, 2020",
     end: "May 23, 2020",
@@ -38,6 +38,12 @@ const data = [
   }
 ];
 
+function sortDateAscending(a, b) {
+  return new Date(a.start) - new Date(b.start);
+}
+
+data = data.sort(sortDateAscending);
+
 export default class Calendar extends Component {
   didInsertElement() {
     let svg = select(this.$("svg")[0]);
@@ -60,8 +66,8 @@ export default class Calendar extends Component {
     svg.append("g").call(
       axisBottom()
         .scale(x)
-        .ticks(timeWeek.every(2))
-        .tickFormat(timeFormat("%b %d"))
+        .ticks(timeMonth.every())
+        .tickFormat(timeFormat("%b"))
     );
 
     svg
