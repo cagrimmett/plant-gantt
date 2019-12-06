@@ -1,1 +1,36 @@
+{{import UIForm from "ui-form"}}
+{{import ColorPicker from "color-picker"}}
+{{import Button from "ui-form/button"}}
+
 <div id="calendar-container"></div>
+
+{{#if (not this.showForm)}}
+  <Button @click={{this.toggle}}>Show the form</Button>
+{{/if}}
+
+{{#if this.showForm}}
+  <UIForm class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" as |Form|>
+    <Form.label>
+      Name
+    </Form.label>
+    <Form.input placeholder="Name" type="text" />
+
+    <Form.label>
+      Days to Maturity
+    </Form.label>
+    <Form.input placeholder="56" type="number" />
+
+    <Form.label>
+      Plant date
+    </Form.label>
+    <Form.input placeholder={{this.today}} type="date" />
+
+    <Form.label>
+      Color
+    </Form.label>
+
+    <ColorPicker value={{this.value}} default="#A6D785" format="hexa" />
+
+    <Form.submit>Save</Form.submit>
+  </UIForm>
+{{/if}}

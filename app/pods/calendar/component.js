@@ -4,6 +4,7 @@ import { select, selectAll } from "d3-selection";
 import { axisBottom } from "d3-axis";
 import { timeFormat } from "d3-time-format";
 import { timeWeek, timeDay } from "d3-time";
+import { action } from "@ember/object";
 
 let data = [
   {
@@ -46,13 +47,13 @@ data = data.sort(sortDateAscending);
 let lastItem = data.length - 1;
 
 function drawChart() {
+  let margin = { top: 30, right: 0, bottom: 10, left: 30 };
+  let height = data.length * 25 + margin.top + margin.bottom;
   let svg = select("#calendar-container")
     .append("svg")
     .attr("width", "100%")
-    .attr("height", "100%")
+    .attr("height", height + 50)
     .attr("id", "calendar");
-  let margin = { top: 30, right: 0, bottom: 10, left: 30 };
-  let height = data.length * 25 + margin.top + margin.bottom;
 
   let width = svg.node().getBoundingClientRect().width;
 
@@ -116,6 +117,16 @@ function drawChart() {
 }
 
 export default class Calendar extends Component {
+  newItem = null;
+  today = new Date();
+
+  showForm = false;
+
+  @action
+  toggle() {
+    this.set("showForm", true);
+  }
+
   didInsertElement() {
     drawChart();
 
