@@ -132,11 +132,12 @@ export default class Calendar extends Component {
       start: this.startDate,
       daysToMaturity: Number(this.daysToMaturity),
       name: this.name,
-      color: "#A6D785"
+      color: this.color.toHEXA().toString()
     };
     data.push(object);
     selectAll("svg").remove();
     drawChart();
+    this.set("showForm", false);
   }
 
   didInsertElement() {
