@@ -42,10 +42,35 @@ let data = [
 function sortDateAscending(a, b) {
   return new Date(a.start) - new Date(b.start);
 }
-let sortedData, lastItem;
+let sortedData;
 function drawChart() {
   sortedData = data.sort(sortDateAscending);
-  lastItem = sortedData.length - 1;
+  function maxIndex(values, valueof) {
+    let max;
+    let maxIndex = -1;
+    let index = -1;
+    if (valueof === undefined) {
+      for (const value of values) {
+        ++index;
+        if (
+          value != null &&
+          (max < value || (max === undefined && value >= value))
+        ) {
+          (max = value), (maxIndex = index);
+        }
+      }
+    } else {
+      for (let value of values) {
+        if (
+          (value = valueof(value, ++index, values)) != null &&
+          (max < value || (max === undefined && value >= value))
+        ) {
+          (max = value), (maxIndex = index);
+        }
+      }
+    }
+    return maxIndex;
+  }
   let margin = { top: 30, right: 0, bottom: 10, left: 30 };
   let height = data.length * 25 + margin.top + margin.bottom;
   let svg = select("#calendar-container")
@@ -55,19 +80,21 @@ function drawChart() {
     .attr("id", "calendar");
 
   let width = svg.node().getBoundingClientRect().width;
-
+  let lastToHarvest = maxIndex(sortedData, d =>
+    timeDay.offset(new Date(d.start), d.daysToMaturity)
+  );
   let x = scaleTime()
     .domain([
-      timeDay.offset(new Date(data.sort(sortDateAscending)[0].start), -15),
+      timeDay.offset(new Date(sortedData[0].start), -15),
       timeDay.offset(
-        new Date(data.sort(sortDateAscending)[lastItem].start),
-        data.sort(sortDateAscending)[lastItem].daysToMaturity + 15
+        new Date(sortedData[lastToHarvest].start),
+        sortedData[lastToHarvest].daysToMaturity + 15
       )
     ])
     .range([10, width - 10]);
 
   let y = scaleBand()
-    .domain(data.sort(sortDateAscending).map(d => d.name))
+    .domain(sortedData.map(d => d.name))
     .range([margin.top, height - margin.bottom])
     .padding(0.1);
 
@@ -81,7 +108,7 @@ function drawChart() {
   svg
     .append("g")
     .selectAll("rect")
-    .data(data.sort(sortDateAscending))
+    .data(sortedData)
     .join("rect")
     .attr("x", d => x(new Date(d.start)))
     .attr("height", y.bandwidth())
@@ -101,7 +128,7 @@ function drawChart() {
     .attr("text-anchor", "middle")
     .style("font", "12px sans-serif")
     .selectAll("text")
-    .data(data.sort(sortDateAscending))
+    .data(sortedData)
     .join("text")
     .attr(
       "x",
