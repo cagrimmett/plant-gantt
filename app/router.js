@@ -13,7 +13,7 @@ Router.map(function() {
     this.route("new");
     this.route("edit", { path: ":slug" });
   });
-  this.route("public", { path: ":user_slug" }, function() {
+  this.route("public-profile", { path: ":user_slug" }, function() {
     this.route("garden", { path: ":garden_slug" });
   });
 });
