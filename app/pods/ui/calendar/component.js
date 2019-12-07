@@ -44,7 +44,7 @@ function sortDateAscending(a, b) {
 }
 let sortedData;
 function drawChart() {
-  sortedData = data.sort(sortDateAscending);
+  sortedData = this.data.sort(sortDateAscending);
   function maxIndex(values, valueof) {
     let max;
     let maxIndex = -1;
