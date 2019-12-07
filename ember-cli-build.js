@@ -30,6 +30,9 @@ module.exports = function(defaults) {
           ...(isProduction ? [purgeCSS] : [])
         ]
       }
+    },
+    "ember-pickr": {
+      themes: ["nano"]
     }
   });
   return app.toTree();

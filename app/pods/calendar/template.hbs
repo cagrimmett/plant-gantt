@@ -4,6 +4,9 @@
 
 <div id="calendar-container"></div>
 
+{{#if this.showBegin}}
+  <div class="text-xl p-2">Add your first plant</div>
+{{/if}}
 {{#if (not this.showForm)}}
   <Button @click={{this.toggle}}>Add a plant</Button>
 {{/if}}
@@ -29,7 +32,7 @@
       Color
     </Form.label>
 
-    <ColorPicker value={{this.color}} default="#A6D785" format="hexa" @value={{mut this.color}} />
+    <ColorPicker @theme="nano" @default="#A6D785" @value={{mut this.color}} />
 
     <Form.submit type="submit">Save</Form.submit>
   </UIForm>

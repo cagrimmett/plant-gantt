@@ -4,39 +4,39 @@ import { select, selectAll } from "d3-selection";
 import { axisBottom } from "d3-axis";
 import { timeFormat } from "d3-time-format";
 import { timeWeek, timeDay } from "d3-time";
-import { action } from "@ember/object";
+import { action, computed } from "@ember/object";
 
 let data = [
-  {
-    start: "May 10, 2020",
-    daysToMaturity: 29,
-    name: "Radishes",
-    color: "#ea5189"
-  },
-  {
-    start: "May 1, 2020",
-    daysToMaturity: 80,
-    name: "Anaheim Peppers",
-    color: "#66e15b"
-  },
-  {
-    start: "June 15, 2020",
-    daysToMaturity: 60,
-    name: "Lacinato Kale",
-    color: "#036b47"
-  },
-  {
-    start: "May 3, 2020",
-    daysToMaturity: 80,
-    name: "Eggplant",
-    color: "purple"
-  },
-  {
-    start: "May 20, 2020",
-    daysToMaturity: 75,
-    name: "Roma Tomatoes",
-    color: "#ff5050"
-  }
+  // {
+  //   start: "May 10, 2020",
+  //   daysToMaturity: 29,
+  //   name: "Radishes",
+  //   color: "#ea5189"
+  // },
+  // {
+  //   start: "May 1, 2020",
+  //   daysToMaturity: 80,
+  //   name: "Anaheim Peppers",
+  //   color: "#66e15b"
+  // },
+  // {
+  //   start: "June 15, 2020",
+  //   daysToMaturity: 60,
+  //   name: "Lacinato Kale",
+  //   color: "#036b47"
+  // },
+  // {
+  //   start: "May 3, 2020",
+  //   daysToMaturity: 80,
+  //   name: "Eggplant",
+  //   color: "purple"
+  // },
+  // {
+  //   start: "May 20, 2020",
+  //   daysToMaturity: 75,
+  //   name: "Roma Tomatoes",
+  //   color: "#ff5050"
+  // }
 ];
 
 function sortDateAscending(a, b) {
@@ -147,6 +147,7 @@ export default class Calendar extends Component {
   today = new Date();
 
   showForm = false;
+  showBegin = false;
 
   @action
   toggle() {
@@ -162,17 +163,32 @@ export default class Calendar extends Component {
       color: this.color.toHEXA().toString()
     };
     data.push(object);
+    this.set("showBegin", false);
     selectAll("svg").remove();
     drawChart();
     this.set("showForm", false);
+    this.set("startDate", null);
+    this.set("name", null);
+    this.set("color", null);
+    this.set("daysToMaturity", null);
+  }
+
+  @computed("data")
+  get windowListener() {
+    if (data.length > 0) {
+      window.addEventListener("resize", function() {
+        selectAll("svg").remove();
+        drawChart();
+      });
+    }
   }
 
   didInsertElement() {
-    drawChart();
-
-    window.addEventListener("resize", function() {
-      selectAll("svg").remove();
+    if (data.length == 0) {
+      this.set("showBegin", true);
+      this.set("showForm", true);
+    } else if (data.length > 0) {
       drawChart();
-    });
+    }
   }
 }
