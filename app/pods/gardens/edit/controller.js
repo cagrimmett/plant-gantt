@@ -10,13 +10,13 @@ export default class GardenEditController extends Controller {
     return this.model.data.length;
   }
 
-  @computed("model")
-  get show() {
+  @computed("model.data")
+  get showBegin() {
     if (this.model.data.length == 0) {
-      this.set("showBegin", true);
       this.set("showForm", true);
-    } else if (this.model.data.length > 0) {
-      //drawChart();
+      return true;
+    } else {
+      return false;
     }
   }
 }
