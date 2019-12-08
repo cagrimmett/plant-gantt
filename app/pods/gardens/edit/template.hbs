@@ -1,8 +1,11 @@
-{{import Form from "ui/form"}}
-{{import ColorPicker from "color-picker"}}
-{{import Button from "ui/form/button"}}
+{{import Calendar from "ui/calendar"}}
+{{import AddPlantForm from "ui/add-plant-form"}}
 
 <h1>slug: {{this.model.slug}}</h1>
+
+{{#if this.model.data}}
+  <Calendar @data={{this.model.data}} />
+{{/if}}
 
 {{#if this.showBegin}}
   <div class="text-xl p-2">Add your first plant</div>
@@ -12,28 +15,7 @@
 {{/if}}
 
 {{#if this.showForm}}
-  <Form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={{this.addToChart}} as |Form|>
-    <Form.label>
-      Name
-    </Form.label>
-    <Form.input placeholder="Name" type="text" @value={{mut this.name}}/>
-
-    <Form.label>
-      Days to Maturity
-    </Form.label>
-    <Form.input placeholder="56" type="number" @value={{mut this.daysToMaturity}}/>
-
-    <Form.label>
-      Plant date
-    </Form.label>
-    <Form.input placeholder={{this.today}} type="date" @value={{mut this.startDate}}/>
-
-    <Form.label>
-      Color
-    </Form.label>
-
-    <ColorPicker @theme="nano" @default="#A6D785" @value={{mut this.color}} />
-
-    <Form.submit type="submit">Save</Form.submit>
-  </Form>
+  <AddPlantForm @data={{this.model.data}} />
 {{/if}}
+
+{{this.model.data}}

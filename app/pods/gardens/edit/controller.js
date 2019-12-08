@@ -16,6 +16,7 @@ export default class GardenEditController extends Controller {
       this.set("showForm", true);
       return true;
     } else {
+      this.set("showForm", false);
       return false;
     }
   }
