@@ -1,1 +1,14 @@
+{{import AddGardenForm from "./add-garden-form"}}
+
 Gallery of a user's gardens
+
+{{#if this.showBegin}}
+  <div class="text-xl p-2">Add your first plant</div>
+{{/if}}
+{{#if (not this.showForm)}}
+  <Button @click={{this.toggle}}>Add a plant</Button>
+{{/if}}
+
+{{#if this.showForm}}
+  <AddGardenForm @data={{this.model.data}} />
+{{/if}}

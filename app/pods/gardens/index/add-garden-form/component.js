@@ -3,15 +3,12 @@ import { action } from "@ember/object";
 import { inject as service } from "@ember/service";
 
 export default class AddPlantFormComponent extends Component {
-  @service Store;
-
-  startDate;
+  @service store;
   name;
-  color;
-  daysToMaturity;
+  zone;
 
   @action
-  addToChart() {
+  saveGarden() {
     // let object = {
     //   start: this.startDate,
     //   daysToMaturity: Number(this.daysToMaturity),
@@ -24,11 +21,9 @@ export default class AddPlantFormComponent extends Component {
     // this.set("color", null);
     // this.set("daysToMaturity", null);
 
-    Store.createRecord("plant", {
-      start: this.startDate,
-      daysToMaturity: Number(this.daysToMaturity),
+    this.store.createRecord("garden", {
       name: this.name,
-      color: this.color.toHEXA().toString()
+      zone: this.zone
     });
   }
 }
