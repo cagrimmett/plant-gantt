@@ -24,11 +24,14 @@ export default class AddPlantFormComponent extends Component {
     // this.set("color", null);
     // this.set("daysToMaturity", null);
 
-    this.store.createRecord("plant", {
+    let newPlant = this.store.createRecord("plant", {
       startDate: new Date(this.startDate),
       daysToMaturity: Number(this.daysToMaturity),
       name: this.name,
-      color: this.color.toHEXA().toString()
+      color: this.color.toHEXA().toString(),
+      garden: this.store.peekRecord("garden", this.garden)
     });
+
+    newPlant.save();
   }
 }

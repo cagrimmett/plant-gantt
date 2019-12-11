@@ -1,10 +1,14 @@
 {{import Calendar from "ui/calendar"}}
 {{import AddPlantForm from "./add-plant-form"}}
+{{import Button from "ui/form/button"}}
 
-<h1>slug: {{this.model.slug}}</h1>
+<h1>Garden: {{this.model.name}}</h1>
+<strong>Zone:</strong> {{this.model.zone}}<br>
+id: {{this.model.id}}<br>
+plants: {{#each this.model.plants as |plant|}} {{plant.name}} {{/each}}
 
-{{#if this.model.data}}
-  <Calendar @data={{this.model.data}} />
+{{#if this.showCalendar}}
+  <Calendar @data={{this.model.plants}} />
 {{/if}}
 
 {{#if this.showBegin}}
@@ -15,7 +19,5 @@
 {{/if}}
 
 {{#if this.showForm}}
-  <AddPlantForm @data={{this.model.data}} />
+  <AddPlantForm @garden={{this.model.id}} />
 {{/if}}
-
-{{this.model.data}}

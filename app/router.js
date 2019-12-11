@@ -10,7 +10,7 @@ Router.map(function() {
   this.route("login");
   this.route("signup");
   this.route("gardens", function() {
-    this.route("edit", { path: ":slug" });
+    this.route("edit", { path: ":id" });
     this.route("new");
   });
   this.route("public-profile", { path: ":user_slug" }, function() {

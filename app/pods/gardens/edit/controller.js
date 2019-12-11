@@ -1,23 +1,32 @@
 import Controller from "@ember/controller";
-import { computed } from "@ember/object";
+import { computed, action } from "@ember/object";
 
 export default class GardenEditController extends Controller {
   showForm = false;
   showBegin = false;
 
-  @computed("model")
-  get dataLength() {
-    return this.model.data.length;
+  @computed("model.plants")
+  get showCalendar() {
+    if (this.model.plants.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  @computed("model.data")
+  @computed("model.plants")
   get showBegin() {
-    if (this.model.data.length == 0) {
+    if (this.model.plants.length == 0) {
       this.set("showForm", true);
       return true;
     } else {
       this.set("showForm", false);
       return false;
     }
+  }
+
+  @action
+  toggle() {
+    this.set("showForm", true);
   }
 }
