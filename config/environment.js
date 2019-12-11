@@ -21,6 +21,15 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+
+    firebase: {
+      apiKey: "AIzaSyAhdOGVwTi2rmUXYV_ih_xja_Wm9OdEHz8",
+      authDomain: "plant-gantt.firebaseapp.com",
+      databaseURL: "https://plant-gantt.firebaseio.com",
+      projectId: "plant-gantt",
+      storageBucket: "plant-gantt.appspot.com",
+      messagingSenderId: "814591808762"
     }
   };
 
