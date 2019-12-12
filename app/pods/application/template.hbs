@@ -1,0 +1,8 @@
+{{#if @session.isAuthenticated}}
+  Logged in as {{ session.data.authenticated.user.displayName }}
+  <button {{action "logout"}}>Sign out</button>
+  {{outlet}}
+{{else}}
+  <button {{action "login"}}>Sign in with Twitter</button>
+{{/if}}
+{{log @session}}
