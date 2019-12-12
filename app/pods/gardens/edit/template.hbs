@@ -3,9 +3,7 @@
 {{import Button from "ui/form/button"}}
 
 <h1>Garden: {{this.model.name}}</h1>
-<strong>Zone:</strong> {{this.model.zone}}<br>
-id: {{this.model.id}}<br>
-plants: {{#each this.model.plants as |plant|}} {{plant.name}} {{/each}}
+<strong>Zone:</strong> {{this.model.zone}}<br><br>
 
 {{#if this.showCalendar}}
   <Calendar @data={{this.model.plants}} />

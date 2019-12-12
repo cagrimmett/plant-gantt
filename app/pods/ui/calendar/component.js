@@ -19,14 +19,19 @@ export default class Calendar extends Component {
     }
   }
 
-  @computed("data")
-  get drawChart() {
+  didInsertElement() {
+    this.drawChart();
+  }
+
+  didUpdateAttrs() {}
+
+  drawChart() {
     selectAll("svg").remove();
     function sortDateAscending(a, b) {
-      return new Date(a.start) - new Date(b.start);
+      return new Date(a.startDate) - new Date(b.startDate);
     }
     let sortedData;
-    sortedData = this.data.sort(sortDateAscending);
+    sortedData = this.data.map(c => c.toJSON()).sort(sortDateAscending);
     function maxIndex(values, valueof) {
       let max;
       let maxIndex = -1;
@@ -63,13 +68,13 @@ export default class Calendar extends Component {
 
     let width = svg.node().getBoundingClientRect().width;
     let lastToHarvest = maxIndex(sortedData, d =>
-      timeDay.offset(new Date(d.start), d.daysToMaturity)
+      timeDay.offset(new Date(d.startDate), d.daysToMaturity)
     );
     let x = scaleTime()
       .domain([
-        timeDay.offset(new Date(sortedData[0].start), -15),
+        timeDay.offset(new Date(sortedData[0].startDate), -15),
         timeDay.offset(
-          new Date(sortedData[lastToHarvest].start),
+          new Date(sortedData[lastToHarvest].startDate),
           sortedData[lastToHarvest].daysToMaturity + 15
         )
       ])
@@ -92,7 +97,7 @@ export default class Calendar extends Component {
       .selectAll("rect")
       .data(sortedData)
       .join("rect")
-      .attr("x", d => x(new Date(d.start)))
+      .attr("x", d => x(new Date(d.startDate)))
       .attr("height", y.bandwidth())
       .attr("y", d => y(d.name))
       .style("fill", d => d.color)
@@ -100,8 +105,8 @@ export default class Calendar extends Component {
       .attr(
         "width",
         d =>
-          x(timeDay.offset(new Date(d.start), d.daysToMaturity)) -
-          x(new Date(d.start))
+          x(timeDay.offset(new Date(d.startDate), d.daysToMaturity)) -
+          x(new Date(d.startDate))
       );
 
     svg
@@ -115,8 +120,8 @@ export default class Calendar extends Component {
       .attr(
         "x",
         d =>
-          (x(timeDay.offset(new Date(d.start), d.daysToMaturity)) +
-            x(new Date(d.start))) /
+          (x(timeDay.offset(new Date(d.startDate), d.daysToMaturity)) +
+            x(new Date(d.startDate))) /
           2
       )
       .attr("y", d => y(d.name) + y.bandwidth() / 2)
